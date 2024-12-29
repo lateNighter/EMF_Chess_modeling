@@ -1,0 +1,27 @@
+package chessmodelplugin;
+
+import chess.Game;
+
+import java.util.Scanner;
+
+public class LoadModelHandler {
+
+    public static void execute() {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Enter the path to load the chess model (e.g., C:\\model.xmi): ");
+        String filePath = scanner.nextLine();
+
+        if (filePath != null && !filePath.isEmpty()) {
+            try {
+                Game loadedGame = ChessModelUtil.loadModel(filePath);
+                SaveModelHandler.setGameInstance(loadedGame);
+                System.out.println("Chess game loaded successfully from " + filePath);
+            } catch (Exception e) {
+                System.out.println("Failed to load chess game: " + e.getMessage());
+            }
+        } else {
+            System.out.println("Invalid file path. Load operation aborted.");
+        }
+    }
+}
+

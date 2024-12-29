@@ -1,0 +1,59 @@
+package chessmodelplugin;
+
+import org.eclipse.core.commands.AbstractHandler;
+import org.eclipse.core.commands.ExecutionEvent;
+import org.eclipse.core.commands.ExecutionException;
+import org.eclipse.jface.dialogs.MessageDialog;
+import chess.Game;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.FileDialog;
+import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.PlatformUI;
+
+public class SaveModelHandler extends AbstractHandler {
+
+    private static Game gameInstance; // Reference to the current game instance
+
+    @Override
+    public Object execute(ExecutionEvent event) throws ExecutionException {
+        // Get the active shell (UI context)
+        Shell shell = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
+
+        // Ensure there is a valid game instance to save
+        if (gameInstance == null) {
+            MessageDialog.openError(shell, "Error", "No chess game instance available to save.");
+            return null;
+        }
+
+        // Open a file dialog to select the location to save the file
+        FileDialog fileDialog = new FileDialog(shell, SWT.SAVE);  // Use SWT.SAVE for saving mode
+        fileDialog.setText("Save Chess Model");
+        fileDialog.setFilterExtensions(new String[] { "*.xmi" });
+        fileDialog.setFileName("chessgame.xmi");  // Suggest default file name
+
+        // Allow the user to select a save location
+        String selectedFile = fileDialog.open();
+
+        if (selectedFile != null && !selectedFile.isEmpty()) {
+            // Append .xmi extension if not already present
+            if (!selectedFile.endsWith(".xmi")) {
+                selectedFile += ".xmi";
+            }
+            
+            ChessModelUtil.serializeModel(gameInstance, selectedFile);
+            MessageDialog.openInformation(shell, "Success", "Chess game saved successfully to " + selectedFile);
+        } else {
+            MessageDialog.openError(shell, "Error", "Invalid file path. Save operation aborted.");
+        }
+
+        return null;
+    }
+
+    public static void setGameInstance(Game game) {
+        gameInstance = game;
+    }
+
+    public static Game getGameInstance() {
+        return gameInstance;
+    }
+}

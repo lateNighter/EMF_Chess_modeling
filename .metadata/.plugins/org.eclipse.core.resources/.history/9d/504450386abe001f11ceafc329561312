@@ -1,0 +1,38 @@
+package chessmodelplugin;
+
+import chess.Game;
+
+import java.io.File;
+import java.util.Scanner;
+
+public class SaveModelHandler {
+
+    private static Game gameInstance; // Reference to the current game instance
+
+    public static void execute() {
+        if (gameInstance == null) {
+            System.out.println("No chess game instance available to save.");
+            return;
+        }
+
+        // Prompt user for the file path
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Enter the path to save the chess model (e.g., C:\\model.xmi): ");
+        String filePath = scanner.nextLine();
+
+        if (filePath != null && !filePath.isEmpty()) {
+            ChessModelUtil.serializeModel(gameInstance, filePath);
+            System.out.println("Chess game saved successfully to " + filePath);
+        } else {
+            System.out.println("Invalid file path. Save operation aborted.");
+        }
+    }
+
+    public static void setGameInstance(Game game) {
+        gameInstance = game;
+    }
+
+    public static Game getGameInstance() {
+        return gameInstance;
+    }
+}

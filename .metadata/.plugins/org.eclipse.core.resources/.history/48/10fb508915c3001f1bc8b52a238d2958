@@ -1,0 +1,45 @@
+// Critique 1: Validate that each Square contains only one Piece
+rule OnePiecePerSquare {
+    context Square
+    check: self.piece->size() <= 1
+    message: "A square can contain at most one piece."
+}
+
+// Critique 2: Validate that no two players have the same color
+rule UniquePlayerColors {
+    context Player
+    check: Game.players->select(p | p.color = self.color)->size() = 1
+    message: "No two players can have the same color."
+}
+
+// Critique 3: Validate that a King is never placed on a square that is attacked
+rule KingNotInCheck {
+    context King
+    check: not self.currentPosition.attacks->exists(s | s.piece.color <> self.color)
+    message: "A King cannot be placed in a position where it is attacked."
+}
+
+// Operation 1: Move a Piece from one Square to another
+operation movePiece(from: Square, to: Square) {
+    // Validate that the from square has a piece
+    if (from.piece = null) {
+        throw "No piece to move."
+    }
+    // Move the piece
+    to.piece = from.piece
+    from.piece = null
+    // Record the move in the MoveHistory
+    Game.moveHistory.add( Move{startSquare = from, endSquare = to} )
+}
+
+// Operation 2: Check if a player has won (King is captured)
+operation checkWin(player: Player): Boolean {
+    // Check if the opponent's King is captured
+    let opponent = Game.players->select(p | p <> player).first()
+    let opponentKing = Game.board.squares->select(s | s.piece.oclIsTypeOf(King) and s.piece.color = opponent.color).first()
+    
+    if (opponentKing.piece = null) {
+        return true
+    }
+    return false
+}

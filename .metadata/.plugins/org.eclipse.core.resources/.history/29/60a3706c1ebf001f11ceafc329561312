@@ -1,0 +1,103 @@
+package chessmodelplugin;
+
+//package chess.plugin.util;
+
+import chess.ChessFactory;
+import chess.Game;
+import chess.Player;
+import chess.PlayerColor;
+
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+
+import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
+import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
+
+import chess.Board;
+
+public class ChessModelUtil {
+
+    public static Game createChessGame() {
+        ChessFactory factory = ChessFactory.eINSTANCE;
+
+        Game game = factory.createGame();
+        game.setState("ongoing");
+        game.setCurrentTurn(PlayerColor.WHITE);
+
+        Player player1 = factory.createPlayer();
+        player1.setName("Player 1");
+        player1.setColor(PlayerColor.WHITE);
+
+        Player player2 = factory.createPlayer();
+        player2.setName("Player 2");
+        player2.setColor(PlayerColor.BLACK);
+
+        game.getPlayers().add(player1);
+        game.getPlayers().add(player2);
+
+        Board board = factory.createBoard();
+        board.setRows(8);
+        board.setColumns(8);
+
+        game.setBoard(board);
+
+        return game;
+    }
+    
+    public static void serializeModel(Game game, String filePath) {
+        Resource.Factory.Registry reg = Resource.Factory.Registry.INSTANCE;
+        Map<String, Object> m = reg.getExtensionToFactoryMap();
+        m.put("xmi", new XMIResourceFactoryImpl());
+
+        ResourceSet resSet = new ResourceSetImpl();
+
+        URI fileURI = URI.createFileURI(filePath);
+
+        Resource resource = resSet.createResource(fileURI);
+
+        resource.getContents().add(game);
+
+        try {
+            resource.save(new HashMap<>());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    public static Game loadModel(String filePath) {
+        Resource.Factory.Registry reg = Resource.Factory.Registry.INSTANCE;
+        Map<String, Object> m = reg.getExtensionToFactoryMap();
+        m.put("xmi", new XMIResourceFactoryImpl());
+
+        ResourceSet resSet = new ResourceSetImpl();
+
+        URI fileURI = URI.createFileURI(filePath);
+
+        Resource resource = resSet.getResource(fileURI, true);
+
+        return (Game) resource.getContents().get(0);
+    }
+    
+    public static boolean validateModel(Game game) {
+        if (game.getPlayers().size() != 2) {
+            System.out.println("Validation failed: Game must have exactly two players.");
+            return false;
+        }
+
+        Board board = game.getBoard();
+        if (board == null || board.getRows() != 8 || board.getColumns() != 8) {
+            System.out.println("Validation failed: Game must have an 8x8 board.");
+            return false;
+        }
+
+        System.out.println("Model is valid.");
+        return true;
+    }
+    
+    
+}
+

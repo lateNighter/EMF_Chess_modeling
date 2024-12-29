@@ -1,0 +1,18 @@
+import chess;
+
+context Piece {
+    constraint ValidPosition {
+        check: self.square.file >= 'a' and self.square.file <= 'h'
+        message: 'The piece is not placed on a valid file.'
+    }
+    
+    constraint ValidColor {
+        check: self.color = 'white' or self.color = 'black'
+        message: 'Piece must be either black or white.'
+    }
+    
+    constraint CorrectType {
+        check: self.oclIsKindOf(Pawn) or self.oclIsKindOf(King) or self.oclIsKindOf(Queen)
+        message: 'Piece must be of a valid type.'
+    }
+}

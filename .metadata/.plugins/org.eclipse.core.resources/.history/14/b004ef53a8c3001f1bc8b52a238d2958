@@ -1,0 +1,166 @@
+context Board {
+    constraint CorrectNumberOfSquares {
+        check: self.squares.size() == 64
+        message: "A chess board must have exactly 64 squares."
+    }
+    constraint KingPresence {
+        check: self.squares.piece.select(p | p.isKindOf(King)).size() == 2
+        message: "Both players must have a King on the board."
+    }
+}
+
+//context Player {
+//    critique PlayerNameSet {
+//        check: not self.name.isUndefined() and self.name.size() > 0
+//        message: "Each player must have a name."
+//    }
+//}
+
+context Game {
+    // Critique: Ensure the game has exactly two players
+    constraint GameHasTwoPlayers {
+        check: self.getPlayerCount() == 2
+        message: "The game should have exactly two players."
+    }
+	
+    constraint PlayersHaveDistinctColors {
+        check: self.players.first().color != self.players.last().color
+        message: "The two players must have distinct colors: one White and one Black."
+    }
+    
+    // Critique 1: Ensure that it is the correct player's turn (White starts first)
+    critique CorrectTurnOrder {
+        check: (self.turn == PlayerColor::White and self.moveHistory.moves.isEmpty()) 
+               or (self.turn == self.players.get(self.moveHistory.moves.size().mod(2)).color)
+        message: "It must be White's turn at the start, and turns must alternate correctly."
+    }
+
+    // Critique 2: Ensure that all pieces are on valid squares (within bounds of the board)
+    critique PiecesOnValidSquares {
+        check: self.board.squares.piece.forAll(p | p.currentPosition.rank >= 1 and p.currentPosition.rank <= self.board.rows 
+               and "a".compareTo(p.currentPosition.file) <= 0 and "h".compareTo(p.currentPosition.file) >= 0)
+        message: "All pieces must be positioned on valid squares within the board."
+    }
+}
+
+// Operation 1: Get the player whose turn it currently is
+operation getCurrentPlayer() : Player {
+    return self.players.select(p | p.color == self.turn).first();
+}
+
+// Operation: Get the total number of players in the game
+operation getPlayerCount() : Integer {
+    return self.players.size();
+}
+
+
+context SpecialMoves {
+    critique SpecialMovesShouldBeEnabledIfPiecesHaveNotMoved {
+        check: (self.castleKingsideWhite implies self.board.squares.piece.select(p | p.isKindOf(King) and p.color = PlayerColor::White and not p.hasMoved).size() == 1) and
+               (self.castleQueensideWhite implies self.board.squares.piece.select(p | p.isKindOf(Rook) and p.color = PlayerColor::White and not p.hasMoved).size() >= 1)
+        message: "Castling should only be possible if the King and Rook involved have not moved."
+    }
+}
+
+
+
+//context Board {
+//    critique KingPresence {
+//        check: self.squares.piece.select(p | p.oclIsKindOf(King)).size() == 2
+//        message: "Both players must have a King on the board."
+//    }
+//}
+
+//operation Game.getPiecesInCheck() : Collection {
+//    var piecesInCheck = Sequence {};
+//    for (piece in self.board.squares.piece) {
+//        if (piece.oclIsTypeOf(King) and piece.inCheck) {
+//            piecesInCheck.add(piece);
+//        }
+//    }
+//    return piecesInCheck;
+//}
+
+
+//
+//context Square {
+//    constraint OnePiecePerSquare {
+//        check: self.piece->size() <= 1
+//        message: "A square can contain at most one piece."
+//    }
+//}
+//
+//context Player {
+//    constraint UniquePlayerColors {
+//        check: Game.getPlayers()->select(p | p.color = self.color)->size() = 1
+//        message: "No two players can have the same color."
+//    }
+//}
+//
+//context King {
+//    constraint KingNotInCheck {
+//        check: not self.currentPosition.attacks->exists(s | s.piece.color <> self.color)
+//        message: "A King cannot be placed in a position where it is attacked."
+//    }
+//}
+
+// Operation 1: Move a Piece from one Square to another
+//operation movePiece(from: Square, to: Square) {
+//    // Validate that the from square has a piece
+//    if (from.piece = null) {
+//        throw "No piece to move."
+//    }
+//    // Move the piece
+//    to.piece = from.piece
+//    from.piece = null
+//    // Record the move in the MoveHistory
+//    Game.moveHistory.add( Move{startSquare = from, endSquare = to} )
+//}
+//
+//// Operation 2: Check if a player has won (King is captured)
+//operation checkWin(player: Player): Boolean {
+//    // Check if the opponent's King is captured
+//    let opponent = Game.players->select(p | p <> player).first()
+//    let opponentKing = Game.board.squares->select(s | s.piece.oclIsTypeOf(King) and s.piece.color = opponent.color).first()
+//    
+//    if (opponentKing.piece = null) {
+//        return true
+//    }
+//    return false
+//}
+
+
+//
+//context Rook {
+//    constraint ValidPosition {
+//        check: self.currentPosition.file >= 'a' and self.currentPosition.file <= 'h'
+//        message: 'The rook is not placed on a valid file.'
+//    }
+//
+//    constraint ValidColor {
+//        check: self.color = 'White' or self.color = 'Black'
+//        message: 'Rook must be either white or black.'
+//    }
+//
+//    constraint CorrectType {
+//        check: self.oclIsTypeOf(Rook)  // This will now specifically check for Rook
+//        message: 'Object is not a valid Rook.'
+//    }
+//}
+//
+//context Pawn {
+//    constraint ValidPosition {
+//        check: self.currentPosition.file >= 'a' and self.currentPosition.file <= 'h'
+//        message: 'The pawn is not placed on a valid file.'
+//    }
+//
+//    constraint ValidColor {
+//        check: self.color = 'White' or self.color = 'Black'
+//        message: 'Pawn must be either white or black.'
+//    }
+//
+//    constraint CorrectType {
+//        check: self.oclIsTypeOf(Pawn)  // This will now specifically check for Pawn
+//        message: 'Object is not a valid Pawn.'
+//    }
+//}

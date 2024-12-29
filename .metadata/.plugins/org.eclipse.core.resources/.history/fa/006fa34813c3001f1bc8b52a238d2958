@@ -1,0 +1,17 @@
+context Piece {
+    constraint ValidPosition {
+        check: self.currentPosition.file >= 'a' and self.currentPosition.file <= 'h'
+        message: 'The piece is not placed on a valid file.'
+    }
+    
+    constraint ValidColor {
+        check: self.color = 'White' or self.color = 'Black'
+        message: 'Piece must be either white or black.'
+    }
+    
+    constraint CorrectType {
+        check: self.oclIsTypeOf(Pawn) or self.oclIsTypeOf(King) or self.oclIsTypeOf(Queen) or
+               self.oclIsTypeOf(Rook) or self.oclIsTypeOf(Bishop) or self.oclIsTypeOf(Knight)
+        message: 'Piece must be of a valid type.'
+    }
+}

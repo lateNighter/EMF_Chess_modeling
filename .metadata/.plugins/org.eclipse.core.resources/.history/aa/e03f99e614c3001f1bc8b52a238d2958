@@ -1,0 +1,54 @@
+context Piece {
+    constraint ValidPosition {
+        check: self.currentPosition.file >= 'a' and self.currentPosition.file <= 'h' and self.currentPosition.rank >= 1 and self.currentPosition.rank <= 8
+        message: 'The piece is not placed on a valid square.'
+    }
+    
+    constraint ValidColor {
+        check: self.color = 'White' or self.color = 'Black'
+        message: 'Piece must be either white or black.'
+    }
+}
+
+context Rook {
+    constraint RookHasValidDirection {
+        check: self.directionOfMovement = 'Forward' or self.directionOfMovement = 'Backward' or self.directionOfMovement = 'LShape'  // Valid rook movement direction check
+        message: 'Rook has an invalid direction of movement.'
+    }
+
+    constraint RookHasNoJump {
+        check: self.distance = 0
+        message: 'Rooks cannot jump over other pieces.'
+    }
+    
+    constraint RookPosition {
+        check: self.currentPosition.rank == 1 or self.currentPosition.rank == 8  // For example, Rooks should be placed on the first or last rank for now
+        message: 'Rook should be on the first or last rank.'
+    }
+}
+
+context Pawn {
+    constraint PawnDirection {
+        check: self.directionOfMovement = 'Forward'  // Pawns move only forward
+        message: 'Pawns can only move forward.'
+    }
+    
+    constraint PawnPromotion {
+        check: self.distance = 1 or self.distance = 2  // Pawns can move 1 or 2 steps initially
+        message: 'Pawns can only move one or two squares initially.'
+    }
+}
+
+context King {
+    constraint KingInCheck {
+        check: self.inCheck = false  // King should not be in check in a valid game state
+        message: 'The King is in check.'
+    }
+}
+
+context Queen {
+    constraint QueenHasValidDirection {
+        check: self.directionOfMovement = 'Forward' or self.directionOfMovement = 'Backward' or self.directionOfMovement = 'Diagonal'
+        message: 'Queen has an invalid direction of movement.'
+    }
+}

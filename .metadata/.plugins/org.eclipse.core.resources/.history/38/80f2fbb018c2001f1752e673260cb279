@@ -1,0 +1,76 @@
+package chessmodelplugin;
+
+import org.eclipse.core.commands.AbstractHandler;
+import org.eclipse.core.commands.ExecutionEvent;
+import org.eclipse.core.commands.ExecutionException;
+import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.PlatformUI;
+
+import chess.Game;
+
+import org.eclipse.emf.common.util.Diagnostic;
+
+public class ValidateModelHandler extends AbstractHandler {
+
+    @Override
+    public Object execute(ExecutionEvent event) throws ExecutionException {
+        Game gameInstance = CreateModelHandler.getGameInstance();
+
+        if (gameInstance == null) {
+            Shell shell = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
+            MessageDialog.openError(shell, "Error", "No chess model to validate. Please create or load a model first.");
+            return null;
+        }
+
+        // Validate the model
+        Diagnostic diagnostic = ChessModelUtil.validateModel(gameInstance);
+        
+        // Notify user about the validation result
+        Shell shell = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
+        if (diagnostic.getSeverity() == Diagnostic.OK) {
+            MessageDialog.openInformation(shell, "Validation", "Chess model is valid.");
+        } else {
+            MessageDialog.openError(shell, "Validation", "Chess model is invalid: " + diagnostic.getMessage());
+        }
+
+        return null;
+    }
+}
+
+
+//package chessmodelplugin;
+//
+//import org.eclipse.core.commands.AbstractHandler;
+//import org.eclipse.core.commands.ExecutionEvent;
+//import org.eclipse.core.commands.ExecutionException;
+//import org.eclipse.jface.dialogs.MessageDialog;
+//import chess.Game;
+//import org.eclipse.swt.widgets.Shell;
+//import org.eclipse.ui.PlatformUI;
+//
+//public class ValidateModelHandler extends AbstractHandler {
+//
+//    @Override
+//    public Object execute(ExecutionEvent event) throws ExecutionException {
+//        Shell shell = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
+//
+//        Game gameInstance = SaveModelHandler.getGameInstance();
+//
+//        if (gameInstance == null) {
+//            MessageDialog.openError(shell, "Error", "No chess game instance available to validate.");
+//            return null;
+//        }
+//
+//        boolean isValid = ChessModelUtil.validateModel(gameInstance);
+//        if (isValid) {
+//            MessageDialog.openInformation(shell, "Validation", "The chess game model is valid.");
+//        } else {
+//            MessageDialog.openError(shell, "Validation Failed", "The chess game model is invalid.");
+//        }
+//
+//        return null;
+//    }
+//}
+//
+//

@@ -1,0 +1,9 @@
+context Piece {
+    critique validSquare {
+        guard: self.square != null
+        check: self.square.file >= 'a' and self.square.file <= 'h' 
+               and self.square.rank >= 1 and self.square.rank <= 8
+        message: "Piece must be located on a valid square (a1 to h8)."
+    }
+}
+

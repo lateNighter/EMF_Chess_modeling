@@ -1,0 +1,39 @@
+package chessmodelplugin;
+
+import org.eclipse.core.commands.AbstractHandler;
+import org.eclipse.core.commands.ExecutionEvent;
+import org.eclipse.core.commands.ExecutionException;
+import org.eclipse.jface.dialogs.MessageDialog;
+import chess.Game;
+import org.eclipse.swt.widgets.FileDialog;
+import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.PlatformUI;
+
+public class LoadModelHandler extends AbstractHandler {
+
+    @Override
+    public Object execute(ExecutionEvent event) throws ExecutionException {
+        Shell shell = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
+
+        FileDialog fileDialog = new FileDialog(shell);
+        fileDialog.setText("Load Chess Model");
+        fileDialog.setFilterExtensions(new String[] { "*.xmi" });
+        String selectedFile = fileDialog.open();
+
+        if (selectedFile != null && !selectedFile.isEmpty()) {
+            try {
+                Game loadedGame = ChessModelUtil.loadModel(selectedFile);
+                SaveModelHandler.setGameInstance(loadedGame);
+                MessageDialog.openInformation(shell, "Success", "Chess game loaded successfully from " + selectedFile);
+            } catch (Exception e) {
+                MessageDialog.openError(shell, "Error", "Failed to load chess game: " + e.getMessage());
+            }
+        } else {
+            MessageDialog.openError(shell, "Error", "Invalid file path. Load operation aborted.");
+        }
+
+        return null;
+    }
+}
+
+

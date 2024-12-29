@@ -1,0 +1,33 @@
+context Rook {
+    constraint ValidPosition {
+        check: self.currentPosition.file >= 'a' and self.currentPosition.file <= 'h'
+        message: 'The rook is not placed on a valid file.'
+    }
+
+    constraint ValidColor {
+        check: self.color = 'White' or self.color = 'Black'
+        message: 'Rook must be either white or black.'
+    }
+
+    constraint CorrectType {
+        check: self.oclIsTypeOf(Rook)  // This will now specifically check for Rook
+        message: 'Object is not a valid Rook.'
+    }
+}
+
+context Pawn {
+    constraint ValidPosition {
+        check: self.currentPosition.file >= 'a' and self.currentPosition.file <= 'h'
+        message: 'The pawn is not placed on a valid file.'
+    }
+
+    constraint ValidColor {
+        check: self.color = 'White' or self.color = 'Black'
+        message: 'Pawn must be either white or black.'
+    }
+
+    constraint CorrectType {
+        check: self.oclIsTypeOf(Pawn)  // This will now specifically check for Pawn
+        message: 'Object is not a valid Pawn.'
+    }
+}

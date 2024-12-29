@@ -1,0 +1,47 @@
+package chessmodelplugin;
+
+import org.eclipse.core.commands.AbstractHandler;
+import org.eclipse.core.commands.ExecutionEvent;
+import org.eclipse.core.commands.ExecutionException;
+import org.eclipse.jface.dialogs.MessageDialog;
+import chess.Game;
+import org.eclipse.swt.widgets.FileDialog;
+import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.PlatformUI;
+
+public class SaveModelHandler extends AbstractHandler {
+
+    private static Game gameInstance; 
+
+    @Override
+    public Object execute(ExecutionEvent event) throws ExecutionException {
+        Shell shell = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
+
+        if (gameInstance == null) {
+            MessageDialog.openError(shell, "Error", "No chess game instance available to save.");
+            return null;
+        }
+
+        FileDialog fileDialog = new FileDialog(shell);
+        fileDialog.setText("Save Chess Model");
+        fileDialog.setFilterExtensions(new String[] { "*.xmi" });
+        String selectedFile = fileDialog.open();
+
+        if (selectedFile != null && !selectedFile.isEmpty()) {
+            ChessModelUtil.serializeModel(gameInstance, selectedFile);
+            MessageDialog.openInformation(shell, "Success", "Chess game saved successfully to " + selectedFile);
+        } else {
+            MessageDialog.openError(shell, "Error", "Invalid file path. Save operation aborted.");
+        }
+
+        return null;
+    }
+
+    public static void setGameInstance(Game game) {
+        gameInstance = game;
+    }
+
+    public static Game getGameInstance() {
+        return gameInstance;
+    }
+}

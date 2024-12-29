@@ -1,0 +1,26 @@
+// EOL Operation: Get the player whose turn it currently is
+operation getCurrentPlayer() : Player {
+    return self.players->select(p | p.color = self.turn)->first();
+}
+
+// EOL Operation: Get the total number of players in the game
+operation getPlayerCount() : Integer {
+    return self.players->size();
+}
+
+// EOL Operation: Validate that it is the correct player's turn (White starts first)
+operation validateTurnOrder() : Boolean {
+    if (self.moveHistory->isEmpty()) {
+        return self.turn = 'WHITE';
+    }
+    return self.turn = self.players->at(self.moveHistory.moves.size().mod(2) + 1).color;
+}
+
+// EOL Operation: Validate that all pieces are positioned on valid squares
+operation validatePiecesOnValidSquares() : Boolean {
+    return self.board.squares->forAll(s | 
+        s.piece->isEmpty() or 
+        (s.piece.currentPosition.rank >= 1 and s.piece.currentPosition.rank <= self.board.rows and
+        "a".compareTo(s.piece.currentPosition.file) <= 0 and "h".compareTo(s.piece.currentPosition.file) >= 0)
+    );
+}

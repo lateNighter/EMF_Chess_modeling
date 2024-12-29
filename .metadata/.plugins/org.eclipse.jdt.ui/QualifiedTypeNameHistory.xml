@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<qualifiedTypeNameHistroy>
+    <fullyQualifiedTypeName name="org.eclipse.emf.ecore.resource.Resource"/>
+    <fullyQualifiedTypeName name="org.eclipse.emf.ecore.resource.ResourceSet"/>
+    <fullyQualifiedTypeName name="java.util.Map"/>
+    <fullyQualifiedTypeName name="org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl"/>
+    <fullyQualifiedTypeName name="org.eclipse.emf.ecore.resource.impl.ResourceSetImpl"/>
+    <fullyQualifiedTypeName name="java.util.HashMap"/>
+    <fullyQualifiedTypeName name="java.io.IOException"/>
+    <fullyQualifiedTypeName name="java.net.URI"/>
+    <fullyQualifiedTypeName name="org.eclipse.emf.common.util.URI"/>
+    <fullyQualifiedTypeName name="org.eclipse.emf.ecore.EObject"/>
+    <fullyQualifiedTypeName name="chess.SpecialMoves"/>
+    <fullyQualifiedTypeName name="org.eclipse.core.commands.ExecutionException"/>
+    <fullyQualifiedTypeName name="chess.ChessFactory"/>
+    <fullyQualifiedTypeName name="chess.Game"/>
+    <fullyQualifiedTypeName name="chess.Player"/>
+    <fullyQualifiedTypeName name="chess.Board"/>
+    <fullyQualifiedTypeName name="chess.Square"/>
+    <fullyQualifiedTypeName name="chess.Piece"/>
+    <fullyQualifiedTypeName name="chess.SquareColor"/>
+    <fullyQualifiedTypeName name="chess.PlayerColor"/>
+    <fullyQualifiedTypeName name="chess.Pawn"/>
+    <fullyQualifiedTypeName name="chess.Rook"/>
+    <fullyQualifiedTypeName name="chess.Knight"/>
+    <fullyQualifiedTypeName name="chess.Bishop"/>
+    <fullyQualifiedTypeName name="chess.Queen"/>
+    <fullyQualifiedTypeName name="chess.King"/>
+    <fullyQualifiedTypeName name="java.util.List"/>
+    <fullyQualifiedTypeName name="java.util.ArrayList"/>
+    <fullyQualifiedTypeName name="chess.MoveHistory"/>
+    <fullyQualifiedTypeName name="java.lang.OutOfMemoryError"/>
+    <fullyQualifiedTypeName name="chess.Move"/>
+</qualifiedTypeNameHistroy>

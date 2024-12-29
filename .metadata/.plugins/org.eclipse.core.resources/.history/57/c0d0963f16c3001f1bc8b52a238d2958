@@ -1,0 +1,81 @@
+context Square {
+    constraint OnePiecePerSquare {
+        check: self.piece->size() <= 1
+        message: "A square can contain at most one piece."
+    }
+}
+
+context Player {
+    constraint UniquePlayerColors {
+        check: Game.getPlayers->select(p | p.color = self.color)->size() = 1
+        message: "No two players can have the same color."
+    }
+}
+
+context King {
+    constraint KingNotInCheck {
+        check: not self.currentPosition.attacks->exists(s | s.piece.color <> self.color)
+        message: "A King cannot be placed in a position where it is attacked."
+    }
+}
+
+// Operation 1: Move a Piece from one Square to another
+//operation movePiece(from: Square, to: Square) {
+//    // Validate that the from square has a piece
+//    if (from.piece = null) {
+//        throw "No piece to move."
+//    }
+//    // Move the piece
+//    to.piece = from.piece
+//    from.piece = null
+//    // Record the move in the MoveHistory
+//    Game.moveHistory.add( Move{startSquare = from, endSquare = to} )
+//}
+//
+//// Operation 2: Check if a player has won (King is captured)
+//operation checkWin(player: Player): Boolean {
+//    // Check if the opponent's King is captured
+//    let opponent = Game.players->select(p | p <> player).first()
+//    let opponentKing = Game.board.squares->select(s | s.piece.oclIsTypeOf(King) and s.piece.color = opponent.color).first()
+//    
+//    if (opponentKing.piece = null) {
+//        return true
+//    }
+//    return false
+//}
+
+
+//
+//context Rook {
+//    constraint ValidPosition {
+//        check: self.currentPosition.file >= 'a' and self.currentPosition.file <= 'h'
+//        message: 'The rook is not placed on a valid file.'
+//    }
+//
+//    constraint ValidColor {
+//        check: self.color = 'White' or self.color = 'Black'
+//        message: 'Rook must be either white or black.'
+//    }
+//
+//    constraint CorrectType {
+//        check: self.oclIsTypeOf(Rook)  // This will now specifically check for Rook
+//        message: 'Object is not a valid Rook.'
+//    }
+//}
+//
+//context Pawn {
+//    constraint ValidPosition {
+//        check: self.currentPosition.file >= 'a' and self.currentPosition.file <= 'h'
+//        message: 'The pawn is not placed on a valid file.'
+//    }
+//
+//    constraint ValidColor {
+//        check: self.color = 'White' or self.color = 'Black'
+//        message: 'Pawn must be either white or black.'
+//    }
+//
+//    constraint CorrectType {
+//        check: self.oclIsTypeOf(Pawn)  // This will now specifically check for Pawn
+//        message: 'Object is not a valid Pawn.'
+//    }
+//}

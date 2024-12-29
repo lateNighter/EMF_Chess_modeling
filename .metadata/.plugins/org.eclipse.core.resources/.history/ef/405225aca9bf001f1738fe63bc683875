@@ -1,0 +1,225 @@
+/**
+ */
+package chess.impl;
+
+import chess.ChessPackage;
+import chess.Piece;
+import chess.Square;
+
+import org.eclipse.emf.common.notify.Notification;
+
+import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.InternalEObject;
+
+import org.eclipse.emf.ecore.impl.ENotificationImpl;
+import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
+
+/**
+ * <!-- begin-user-doc -->
+ * An implementation of the model object '<em><b>Piece</b></em>'.
+ * <!-- end-user-doc -->
+ * <p>
+ * The following features are implemented:
+ * </p>
+ * <ul>
+ *   <li>{@link chess.impl.PieceImpl#getPosition <em>Position</em>}</li>
+ *   <li>{@link chess.impl.PieceImpl#isIsCaptured <em>Is Captured</em>}</li>
+ * </ul>
+ *
+ * @generated
+ */
+public abstract class PieceImpl extends MinimalEObjectImpl.Container implements Piece {
+	/**
+	 * The cached value of the '{@link #getPosition() <em>Position</em>}' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getPosition()
+	 * @generated
+	 * @ordered
+	 */
+	protected Square position;
+
+	/**
+	 * The default value of the '{@link #isIsCaptured() <em>Is Captured</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #isIsCaptured()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final boolean IS_CAPTURED_EDEFAULT = false;
+
+	/**
+	 * The cached value of the '{@link #isIsCaptured() <em>Is Captured</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #isIsCaptured()
+	 * @generated
+	 * @ordered
+	 */
+	protected boolean isCaptured = IS_CAPTURED_EDEFAULT;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected PieceImpl() {
+		super();
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	protected EClass eStaticClass() {
+		return ChessPackage.Literals.PIECE;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public Square getPosition() {
+		if (position != null && position.eIsProxy()) {
+			InternalEObject oldPosition = (InternalEObject)position;
+			position = (Square)eResolveProxy(oldPosition);
+			if (position != oldPosition) {
+				if (eNotificationRequired())
+					eNotify(new ENotificationImpl(this, Notification.RESOLVE, ChessPackage.PIECE__POSITION, oldPosition, position));
+			}
+		}
+		return position;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public Square basicGetPosition() {
+		return position;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setPosition(Square newPosition) {
+		Square oldPosition = position;
+		position = newPosition;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, ChessPackage.PIECE__POSITION, oldPosition, position));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public boolean isIsCaptured() {
+		return isCaptured;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setIsCaptured(boolean newIsCaptured) {
+		boolean oldIsCaptured = isCaptured;
+		isCaptured = newIsCaptured;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, ChessPackage.PIECE__IS_CAPTURED, oldIsCaptured, isCaptured));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Object eGet(int featureID, boolean resolve, boolean coreType) {
+		switch (featureID) {
+			case ChessPackage.PIECE__POSITION:
+				if (resolve) return getPosition();
+				return basicGetPosition();
+			case ChessPackage.PIECE__IS_CAPTURED:
+				return isIsCaptured();
+		}
+		return super.eGet(featureID, resolve, coreType);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public void eSet(int featureID, Object newValue) {
+		switch (featureID) {
+			case ChessPackage.PIECE__POSITION:
+				setPosition((Square)newValue);
+				return;
+			case ChessPackage.PIECE__IS_CAPTURED:
+				setIsCaptured((Boolean)newValue);
+				return;
+		}
+		super.eSet(featureID, newValue);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public void eUnset(int featureID) {
+		switch (featureID) {
+			case ChessPackage.PIECE__POSITION:
+				setPosition((Square)null);
+				return;
+			case ChessPackage.PIECE__IS_CAPTURED:
+				setIsCaptured(IS_CAPTURED_EDEFAULT);
+				return;
+		}
+		super.eUnset(featureID);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public boolean eIsSet(int featureID) {
+		switch (featureID) {
+			case ChessPackage.PIECE__POSITION:
+				return position != null;
+			case ChessPackage.PIECE__IS_CAPTURED:
+				return isCaptured != IS_CAPTURED_EDEFAULT;
+		}
+		return super.eIsSet(featureID);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public String toString() {
+		if (eIsProxy()) return super.toString();
+
+		StringBuilder result = new StringBuilder(super.toString());
+		result.append(" (isCaptured: ");
+		result.append(isCaptured);
+		result.append(')');
+		return result.toString();
+	}
+
+} //PieceImpl

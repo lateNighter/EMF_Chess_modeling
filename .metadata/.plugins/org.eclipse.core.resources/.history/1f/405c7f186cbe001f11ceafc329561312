@@ -1,0 +1,23 @@
+package chessmodelplugin;
+
+import chess.Game;
+
+public class ValidateModelHandler {
+
+    public static void execute() {
+        Game gameInstance = SaveModelHandler.getGameInstance();
+
+        if (gameInstance == null) {
+            System.out.println("No chess game instance available to validate.");
+            return;
+        }
+
+        boolean isValid = ChessModelUtil.validateModel(gameInstance);
+        if (isValid) {
+            System.out.println("The chess game model is valid.");
+        } else {
+            System.out.println("The chess game model is invalid.");
+        }
+    }
+}
+

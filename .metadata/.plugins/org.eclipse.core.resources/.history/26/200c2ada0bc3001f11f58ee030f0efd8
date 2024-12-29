@@ -1,0 +1,8 @@
+import Chess;  // or the name of your specific metamodel
+
+context Piece {
+    constraint CorrectPosition {
+        check: self.square.file >= 'a' and self.square.file <= 'h'
+        message: 'Piece is not on a valid file.'
+    }
+}
